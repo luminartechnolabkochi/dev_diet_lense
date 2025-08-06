@@ -11,6 +11,18 @@ class User(AbstractUser):
     is_verified = models.BooleanField(default=False)
 
 
+class UserOtp(models.Model):
+
+    owner = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    otp = models.CharField(max_length=12,null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+     
+
+
+
 
 class UserProfile(models.Model):
 
@@ -49,10 +61,6 @@ class UserProfile(models.Model):
 # request.user.profile.bmr  reverse reference 
 
 
-
-
-
-
-
+# django -> 
 
 
