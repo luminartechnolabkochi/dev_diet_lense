@@ -2,13 +2,15 @@ from django.shortcuts import render,redirect
 
 from django.views.generic import View
 
-from diet_app.forms import SignUpForm
+from diet_app.forms import SignUpForm,OtpVerificationForm
 
 from diet_app.models import UserOtp
 
 from django.contrib import messages
 
 from random import randint
+
+from django.core.mail import  send_mail
 
 def generate_otp(user_id):
 
@@ -17,12 +19,6 @@ def generate_otp(user_id):
     otp+=user_id
 
     return str(otp)
-
-
-
-
-
-
 
 
 
@@ -56,18 +52,40 @@ class SignUpView(View):
 
             UserOtp.objects.create(owner=user_instance,otp=otp)
 
+            send_mail(
+                "dietlense otp verification",
+                f"your ot is {otp}",
+                "sajaykannan10@gmail.com",
+                ["karthikramesh12345@gmail.com"],
+                fail_silently=True
+            )
+
             # logic for sending email
             # phone #333
 
             messages.success(request,"otp has been send ....")
 
-            return redirect("register")
+            return redirect("verify-otp")
         
         messages.error(request,"failed to create account ")
         return render(request,self.template_name,{"form":form_instance})
 
 
 
+class OtpVerificationView(View):
+
+    template_name = "otp-verify.html"
+
+    form_class = OtpVerificationForm
+
+
+    def get(self,request,*args,**kwargs):
+
+        form_instance = self.form_class()
+
+        return render(request,self.template_name,{"form":form_instance})
+    
+
 
 
 
@@ -82,3 +100,7 @@ class SignUpView(View):
     
 
 
+
+
+
+# Emailing settings

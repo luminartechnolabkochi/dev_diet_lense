@@ -138,3 +138,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = "diet_app.User"
+
+
+# g-password
+# muya pgbb dihu bzet 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'sajaykannan10@gmail.com'
+EMAIL_HOST_PASSWORD = 'muya pgbb dihu bzet'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

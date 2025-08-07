@@ -23,5 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path("register/",views.SignUpView.as_view(),name="register"),
+
+    path("otp/verify/",views.OtpVerificationView.as_view(),name="verify-otp")
     
 ]
