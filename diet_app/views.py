@@ -1,10 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 
 from django.views.generic import View
 
 from diet_app.forms import SignUpForm,OtpVerificationForm
 
-from diet_app.models import UserOtp
+from diet_app.models import UserOtp,User
 
 from django.contrib import messages
 
@@ -85,6 +85,41 @@ class OtpVerificationView(View):
 
         return render(request,self.template_name,{"form":form_instance})
     
+    def post(self,request,*args,**kwargs):
+
+
+        form_data = request.POST
+
+        form_instance = self.form_class(form_data)
+
+        if form_instance.is_valid():
+
+            validated_data= form_instance.cleaned_data
+
+            otp = validated_data.get("otp")
+
+            otp_object = get_object_or_404(UserOtp,otp=otp)
+
+            user_object =get_object_or_404(User,username=otp_object.owner)
+
+            user_object.is_verified = True
+
+            user_object.is_active = True
+
+            user_object.save()
+
+            otp_object.delete()
+
+            messages.success(request,"otp has been verified")
+
+        return redirect("verify-otp")
+
+
+
+
+
+           
+
 
 
 
