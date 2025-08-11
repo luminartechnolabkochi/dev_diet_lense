@@ -24,6 +24,8 @@ urlpatterns = [
 
     path("register/",views.SignUpView.as_view(),name="register"),
 
-    path("otp/verify/",views.OtpVerificationView.as_view(),name="verify-otp")
+    path("otp/verify/",views.OtpVerificationView.as_view(),name="verify-otp"),
+
+    path("signin/",views.SignInView.as_view(),name="signin")
     
 ]

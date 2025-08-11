@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 
 from django.views.generic import View
 
-from diet_app.forms import SignUpForm,OtpVerificationForm
+from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm
 
 from diet_app.models import UserOtp,User
 
@@ -87,7 +87,6 @@ class OtpVerificationView(View):
     
     def post(self,request,*args,**kwargs):
 
-
         form_data = request.POST
 
         form_instance = self.form_class(form_data)
@@ -112,8 +111,23 @@ class OtpVerificationView(View):
 
             messages.success(request,"otp has been verified")
 
+            return redirect("signin")
+
         return redirect("verify-otp")
 
+
+
+class SignInView(View):
+
+    template_name = "signin.html"
+
+    form_class = LoginForm
+
+    def get(self,request,*args,**kwargs):
+
+        form_instance = self.form_class()
+
+        return render(request,self.template_name,{"form":form_instance})
 
 
 

@@ -19,3 +19,13 @@ class SignUpForm(UserCreationForm):
 class OtpVerificationForm(forms.Form):
 
     otp = forms.CharField()
+
+
+
+class LoginForm(forms.Form):
+
+    username = forms.CharField()
+
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    
