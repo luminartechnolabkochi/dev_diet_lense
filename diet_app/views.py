@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 
 from django.views.generic import View
 
-from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm
+from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm,UserProfileForm
 
 from diet_app.models import UserOtp,User
 
@@ -153,7 +153,7 @@ class SignInView(View):
 
                 messages.success(request,"authentication completed")
 
-                return redirect("signin")
+                return redirect("profile-create")
         messages.error(request,"invalid credential")
         
         return render(request,self.template_name,{"form":form_instance})
@@ -162,6 +162,19 @@ class SignInView(View):
 
 
 
+
+class UserProfileCreateView(View):
+
+    template_name = "profile-create.html"
+
+    form_class = UserProfileForm
+
+    def get(self,request,*args,**kwargs):
+
+        form_instance = self.form_class()
+
+        return render(request,self.template_name,{"form":form_instance})
+    
 
 
 

@@ -4,7 +4,7 @@ from django import forms
 
 from django.contrib.auth.forms import UserCreationForm
 
-from diet_app.models import User
+from diet_app.models import User,UserProfile
 
 class SignUpForm(UserCreationForm):
 
@@ -28,4 +28,13 @@ class LoginForm(forms.Form):
 
     password = forms.CharField(widget=forms.PasswordInput())
 
-    
+
+class UserProfileForm(forms.ModelForm):
+
+    class Meta:
+
+        model = UserProfile
+
+        exclude = ("owner","bmr")
+
+

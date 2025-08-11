@@ -26,6 +26,8 @@ urlpatterns = [
 
     path("otp/verify/",views.OtpVerificationView.as_view(),name="verify-otp"),
 
-    path("signin/",views.SignInView.as_view(),name="signin")
+    path("signin/",views.SignInView.as_view(),name="signin"),
+
+    path("profile/add/",views.UserProfileCreateView.as_view(),name="profile-create" )
     
 ]
