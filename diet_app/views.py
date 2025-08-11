@@ -12,6 +12,8 @@ from random import randint
 
 from django.core.mail import  send_mail
 
+from django.contrib.auth import authenticate,login,logout
+
 def generate_otp(user_id):
 
     otp = randint(10000,100000)
@@ -128,6 +130,43 @@ class SignInView(View):
         form_instance = self.form_class()
 
         return render(request,self.template_name,{"form":form_instance})
+    
+    def post(self,request,*args,**kwargs):
+
+        form_data = request.POST
+
+        form_instance = self.form_class(form_data)
+
+        if form_instance.is_valid():
+
+            validated_data= form_instance.cleaned_data
+
+            u_name = validated_data.get("username")
+
+            pwd = validated_data.get("password")
+
+            user_object = authenticate(request,username = u_name,password = pwd)
+
+            if user_object:
+
+                login(request,user_object)
+
+                messages.success(request,"authentication completed")
+
+                return redirect("signin")
+        messages.error(request,"invalid credential")
+        
+        return render(request,self.template_name,{"form":form_instance})
+
+        
+
+
+
+
+
+
+
+
 
 
 
