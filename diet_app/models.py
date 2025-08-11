@@ -49,7 +49,7 @@ class UserProfile(models.Model):
     )
 
 
-    acitvity_level = models.CharField(max_length=200,choices=ACTIVITY_CHOICES,default="1.2")
+    activity_level = models.CharField(max_length=200,choices=ACTIVITY_CHOICES,default="1.2")
 
     bmr = models.FloatField(null=True)
 
