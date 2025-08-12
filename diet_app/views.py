@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 
-from django.views.generic import View
+from django.views.generic import View,TemplateView,FormView
 
 from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm,UserProfileForm
 
@@ -119,17 +119,17 @@ class OtpVerificationView(View):
 
 
 
-class SignInView(View):
+class SignInView(FormView):
 
     template_name = "signin.html"
 
     form_class = LoginForm
 
-    def get(self,request,*args,**kwargs):
+    # def get(self,request,*args,**kwargs):
 
-        form_instance = self.form_class()
+    #     form_instance = self.form_class()
 
-        return render(request,self.template_name,{"form":form_instance})
+    #     return render(request,self.template_name,{"form":form_instance})
     
     def post(self,request,*args,**kwargs):
 
@@ -153,8 +153,9 @@ class SignInView(View):
 
                 messages.success(request,"authentication completed")
 
-                return redirect("profile-create")
-        
+                return redirect("index" if UserProfile.objects.filter(owner=request.user).exists() else "profile-create")
+
+                
         messages.error(request,"invalid credential")
         
         return render(request,self.template_name,{"form":form_instance})
@@ -235,6 +236,8 @@ class UserProfileCreateView(View):
             # UserProfile.objects.create(**validated_data,owner=request.user,bmr=tdee)
 
             messages.success(request,"profile has been created successfully")
+
+            return redirect("index")
         else:
             messages.error(request,"failed to create profile")  
 
@@ -243,8 +246,36 @@ class UserProfileCreateView(View):
         return render(request,self.template_name,{"form":form_instance})
     
 
+class IndexView(View):
+
+    template_name= "index.html"
+
+    def get(self,request,*args,**kwargs):
+
+        return render(request,self.template_name)
 
 
+
+class ProfileDetailView(View):
+
+    template_name = "profile-detail.html"
+
+
+    def get(self,request,*args,**kwargs):
+        
+        if UserProfile.objects.filter(owner=request.user).exists():
+            
+            qs= UserProfile.objects.get(owner = request.user)
+
+            return render(request,self.template_name,{"profile":qs})
+        else:
+
+            messages.error(request,"profile not yet created")
+
+            return redirect("signin")
+
+
+   
 
 
 

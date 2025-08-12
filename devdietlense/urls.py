@@ -28,6 +28,9 @@ urlpatterns = [
 
     path("signin/",views.SignInView.as_view(),name="signin"),
 
-    path("profile/add/",views.UserProfileCreateView.as_view(),name="profile-create" )
+    path("profile/add/",views.UserProfileCreateView.as_view(),name="profile-create" ),
+
+
+    path("index/",views.IndexView.as_view(),name="index")
     
 ]
