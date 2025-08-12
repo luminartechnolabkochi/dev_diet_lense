@@ -4,7 +4,7 @@ from django.views.generic import View
 
 from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm,UserProfileForm
 
-from diet_app.models import UserOtp,User
+from diet_app.models import UserOtp,User,UserProfile
 
 from django.contrib import messages
 
@@ -226,7 +226,17 @@ class UserProfileCreateView(View):
 
             tdee=calculate_bmr(height,weight,age,activity_level,gender).get("TDEE")
 
-            print(tdee)
+            form_instance.instance.owner = request.user
+
+            form_instance.instance.bmr = tdee
+
+            form_instance.save()
+
+            # UserProfile.objects.create(**validated_data,owner=request.user,bmr=tdee)
+
+            messages.success(request,"profile has been created successfully")
+        else:
+            messages.error(request,"failed to create profile")  
 
            
 
