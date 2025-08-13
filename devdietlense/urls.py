@@ -33,6 +33,8 @@ urlpatterns = [
 
     path("index/",views.IndexView.as_view(),name="index"),
 
-    path("my-profile/",views.ProfileDetailView.as_view(),name="my-profile")
+    path("my-profile/",views.ProfileDetailView.as_view(),name="my-profile"),
+
+    path("food/add/",views.FoodLogCeateView.as_view(),name="add-food")
     
 ]

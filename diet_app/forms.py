@@ -4,7 +4,7 @@ from django import forms
 
 from django.contrib.auth.forms import UserCreationForm
 
-from diet_app.models import User,UserProfile
+from diet_app.models import User,UserProfile,FoodLog
 
 class SignUpForm(UserCreationForm):
 
@@ -38,3 +38,13 @@ class UserProfileForm(forms.ModelForm):
         exclude = ("owner","bmr")
 
 
+
+
+class FoodLogForm(forms.ModelForm):
+
+    class Meta:
+
+        model = FoodLog
+
+        exclude = ("owner","picture","created_at")
+        

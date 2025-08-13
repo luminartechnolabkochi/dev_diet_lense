@@ -2,9 +2,9 @@ from django.shortcuts import render,redirect,get_object_or_404
 
 from django.views.generic import View,TemplateView,FormView
 
-from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm,UserProfileForm
+from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm,UserProfileForm,FoodLogForm
 
-from diet_app.models import UserOtp,User,UserProfile
+from diet_app.models import UserOtp,User,UserProfile,FoodLog
 
 from django.contrib import messages
 
@@ -276,8 +276,45 @@ class ProfileDetailView(View):
             return redirect("signin")
 
 
-   
+class FoodLogCeateView(FormView):
 
+    template_name = "food-entry.html"
+
+    form_class = FoodLogForm
+
+    def post(self,request,*args,**kwargs):
+
+        form_data = request.POST
+
+        form_instance = self.form_class(form_data)
+
+        if form_instance.is_valid():
+            #either
+            
+            #validated_data = form_instance.cleaned_data
+
+            # FoodLog.objects.create(**validated_data,owner=request.user)
+            
+            #or
+            form_instance.instance.owner = request.user
+
+            form_instance.save()
+
+
+            messages.success(request,"food log has been added ")
+
+            return redirect("add-food")
+
+        
+        messages.error(request,"failed to add food log")
+
+        return  render(request,self.template_name,{"form":form_instance})
+
+
+
+
+
+    
 
 
 
