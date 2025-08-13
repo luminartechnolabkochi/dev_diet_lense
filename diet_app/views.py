@@ -57,7 +57,7 @@ class SignUpView(View):
             send_mail(
                 "dietlense otp verification",
                 f"your ot is {otp}",
-                "sajaykannan10@gmail.com",
+                "sabirsadaru@gmail.com",
                 ["karthikramesh12345@gmail.com"],
                 fail_silently=True
             )
@@ -189,6 +189,7 @@ def calculate_bmr(height_cm, weight_kg, age, activity_level, gender):
 
     return {"BMR": round(bmr, 2), "TDEE": round(tdee, 2)}
    
+
 
 
 

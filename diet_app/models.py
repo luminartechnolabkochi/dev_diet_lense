@@ -56,11 +56,49 @@ class UserProfile(models.Model):
     owner = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
 
 
-# prof_object = UserProfile.objects.get(owner = request.user)
 
-# request.user.profile.bmr  reverse reference 
+# FoodLog 
+# [id,name,
+#   meal_type,calories,
+#   serving_size,
+#   note,picture,
+#   owner,created_at
+# ]
+
+class FoodLog(models.Model):
+
+    name = models.CharField(max_length=200,null=True)
+
+    MEAL_TYPE_OPTIONS=(
+        ("breakfast","Breakfast"),
+        ("lunch","Lunch"),
+        ("dinner","Dinner"),
+        ("snack","Snack")
+    )
+
+    meal_type = models.CharField(max_length=200,choices=MEAL_TYPE_OPTIONS,null=True)
+
+    calories = models.PositiveIntegerField(null=True)
+
+    serving_size = models.CharField(max_length=200,null=True)
+
+    notes = models.TextField(null=True)
+
+    picture = models.ImageField(upload_to="foodlogs",null=True)
+
+    owner = models.ForeignKey(User,on_delete=models.CASCADE,related_name="foodentries")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+
+        return self.name
 
 
-# django -> 
+
+
+
+
+
 
 
