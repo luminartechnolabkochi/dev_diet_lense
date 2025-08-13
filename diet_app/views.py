@@ -311,6 +311,32 @@ class FoodLogCeateView(FormView):
         return  render(request,self.template_name,{"form":form_instance})
 
 
+from django.utils import timezone
+
+
+class DailySummaryView(View):
+
+    template_name = "daily-summary.html"
+
+    def get(self,request,*args,**kwargs):
+
+        cur_date=timezone.now().date()
+
+        qs=FoodLog.objects.filter(owner = request.user,created_at__date=cur_date)        
+
+        return render(request,self.template_name,{"data":qs})
+
+       
+
+
+
+
+
+
+
+
+
+
 
 
 

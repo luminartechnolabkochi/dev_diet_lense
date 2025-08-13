@@ -35,6 +35,8 @@ urlpatterns = [
 
     path("my-profile/",views.ProfileDetailView.as_view(),name="my-profile"),
 
-    path("food/add/",views.FoodLogCeateView.as_view(),name="add-food")
+    path("food/add/",views.FoodLogCeateView.as_view(),name="add-food"),
+
+    path("daily-summary/",views.DailySummaryView.as_view(),name="daily-summary")
     
 ]
