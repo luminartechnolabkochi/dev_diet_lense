@@ -329,12 +329,69 @@ class DailySummaryView(View):
         total_calorie =qs.values("calories").aggregate(total=Sum("calories")).get("total")
 
         balance = request.user.profile.bmr - total_calorie
+
+        gp=qs.values("meal_type").annotate(total=Sum("calories"))
+
+        print(gp)
                    
 
         return render(request,self.template_name,{"data":qs,"consumed":total_calorie,"remaining":balance})
 
        
 
+class FoodLogDeleteView(View):
+
+    def get(self,request,*args,**kwargs):
+        
+        id = kwargs.get("pk")
+
+        food_log_object = get_object_or_404(FoodLog,id=id)
+
+        food_log_object.delete()        
+
+        messages.success(request," food log has been removed")
+
+        return redirect("daily-summary")
+
+
+class FoodLogUpdateView(View):
+
+    template_name = "food-log-update.html"
+
+    form_class = FoodLogForm
+
+    def get(self,request,*args,**kwargs):
+
+        id = kwargs.get("pk")
+
+        food_log_object = get_object_or_404(FoodLog,id=id)
+
+        form_instance = self.form_class(instance=food_log_object)
+
+        return render(request,self.template_name,{"form":form_instance})
+    
+    def post(self,request,*args,**kwargs):
+
+        form_data = request.POST
+
+        id = kwargs.get("pk")
+
+        food_log_object = get_object_or_404(FoodLog,id=id)
+
+        form_instance = self.form_class(form_data,instance=food_log_object)
+
+        if form_instance.is_valid():
+
+            form_instance.save()
+
+            messages.success(request,"foo log has been updated")
+
+            return redirect("daily-summary")
+        else:
+
+            messages.error(request,"failed to update food log")
+
+            return render(request,self.template_name,{"form":form_instance})
 
 
 

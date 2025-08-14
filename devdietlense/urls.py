@@ -37,6 +37,10 @@ urlpatterns = [
 
     path("food/add/",views.FoodLogCeateView.as_view(),name="add-food"),
 
-    path("daily-summary/",views.DailySummaryView.as_view(),name="daily-summary")
+    path("daily-summary/",views.DailySummaryView.as_view(),name="daily-summary"),
+
+    path("foodlogs/<int:pk>/remove/",views.FoodLogDeleteView.as_view(),name="food-log-delete"),
+
+    path("foodlogs/<int:pk>/change",views.FoodLogUpdateView.as_view(),name="food-log-update")
     
 ]

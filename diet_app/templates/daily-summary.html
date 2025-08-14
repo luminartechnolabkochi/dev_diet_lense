@@ -49,6 +49,11 @@
                     <td>{{fl.meal_type}}</td>
                     <td>{{fl.calories}}</td>
                     <td>{{fl.created_at}}</td>
+                    <td>
+                        <a href="{%url 'food-log-delete' fl.id%}">delete</a>
+
+                        <a href="{%url 'food-log-update' fl.id%}">edit</a>
+                    </td>
                 </tr>
             {%endfor%}
         </table>
