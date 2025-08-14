@@ -314,6 +314,8 @@ class FoodLogCeateView(FormView):
 from django.utils import timezone
 
 
+from django.db.models import Sum
+
 class DailySummaryView(View):
 
     template_name = "daily-summary.html"
@@ -322,9 +324,12 @@ class DailySummaryView(View):
 
         cur_date=timezone.now().date()
 
-        qs=FoodLog.objects.filter(owner = request.user,created_at__date=cur_date)        
+        qs=FoodLog.objects.filter(owner = request.user,created_at__date=cur_date) 
 
-        return render(request,self.template_name,{"data":qs})
+        total_calorie =qs.values("calories").aggregate(total=Sum("calories")).get("total")
+                   
+
+        return render(request,self.template_name,{"data":qs,"consumed":total_calorie})
 
        
 
