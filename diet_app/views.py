@@ -327,9 +327,11 @@ class DailySummaryView(View):
         qs=FoodLog.objects.filter(owner = request.user,created_at__date=cur_date) 
 
         total_calorie =qs.values("calories").aggregate(total=Sum("calories")).get("total")
+
+        balance = request.user.profile.bmr - total_calorie
                    
 
-        return render(request,self.template_name,{"data":qs,"consumed":total_calorie})
+        return render(request,self.template_name,{"data":qs,"consumed":total_calorie,"remaining":balance})
 
        
 
