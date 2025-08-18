@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 
 from django.views.generic import View,TemplateView,FormView
 
-from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm,UserProfileForm,FoodLogForm
+from diet_app.forms import SignUpForm,OtpVerificationForm,LoginForm,UserProfileForm,FoodLogForm,FoodLogImageForm
 
 from diet_app.models import UserOtp,User,UserProfile,FoodLog
 
@@ -326,13 +326,17 @@ class DailySummaryView(View):
 
         qs=FoodLog.objects.filter(owner = request.user,created_at__date=cur_date) 
 
-        total_calorie =qs.values("calories").aggregate(total=Sum("calories")).get("total")
+        total_calorie = 0
 
-        balance = request.user.profile.bmr - total_calorie
+        balance = request.user.profile.bmr
 
-        gp=qs.values("meal_type").annotate(total=Sum("calories"))
+        if qs.exists():
 
-        print(gp)
+            total_calorie =qs.values("calories").aggregate(total=Sum("calories")).get("total")
+
+            balance = request.user.profile.bmr - total_calorie
+
+     
                    
 
         return render(request,self.template_name,{"data":qs,"consumed":total_calorie,"remaining":balance})
@@ -394,7 +398,55 @@ class FoodLogUpdateView(View):
             return render(request,self.template_name,{"form":form_instance})
 
 
+class ImageProcessingView(FormView):
 
+
+    template_name = "image-upload.html"
+
+    form_class = FoodLogImageForm
+
+
+    def post(self, request, *args, **kwargs):
+        
+        form_data = request.POST
+
+        files = request.FILES
+
+        form_instance = self.form_class(form_data,files=files)
+
+        if form_instance.is_valid():
+
+            form_instance.instance.owner = request.user
+
+            food_log_object= form_instance.save()
+
+            print(food_log_object.picture.url)
+
+            # llm integration
+            
+            # fetch image
+            
+            print("success block")
+            
+            return redirect("index")
+        
+        else:
+           
+            print("failed block")
+
+            return render(request,self.template_name,{"form":form_instance}) 
+
+
+
+
+
+
+
+
+
+
+
+    
 
 
 

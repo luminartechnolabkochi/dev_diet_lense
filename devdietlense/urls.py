@@ -41,6 +41,8 @@ urlpatterns = [
 
     path("foodlogs/<int:pk>/remove/",views.FoodLogDeleteView.as_view(),name="food-log-delete"),
 
-    path("foodlogs/<int:pk>/change",views.FoodLogUpdateView.as_view(),name="food-log-update")
+    path("foodlogs/<int:pk>/change",views.FoodLogUpdateView.as_view(),name="food-log-update"),
+
+    path("foodlogs/image-upload/",views.ImageProcessingView.as_view(),name="image-process")
     
 ]

@@ -48,3 +48,12 @@ class FoodLogForm(forms.ModelForm):
 
         exclude = ("owner","picture","created_at")
         
+
+class FoodLogImageForm(forms.ModelForm):
+
+    class Meta:
+
+        model = FoodLog
+
+        fields = ["picture"]
+        
